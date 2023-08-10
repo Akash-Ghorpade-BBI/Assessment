@@ -1,1 +1,170 @@
+/******************************************************************************
 
+                            Online Java Compiler.
+                Code, Compile, Run and Debug java program online.
+Write your code in this editor and press "Run" button to execute it.
+
+*******************************************************************************/
+
+import java.util.ArrayList;
+import java.util.List;
+
+class Human {
+    int HP;
+    String behaviour;
+
+    public Human(int HP, String behaviour) {
+        this.HP = HP;
+        this.behaviour = behaviour;
+    }
+
+    public void attack() {
+        System.out.println("Basic attack");
+    }
+
+    public boolean isAlive() {
+        return HP > 0;
+    }
+}
+
+class Hero extends Human {
+    boolean hasHighIQ;
+
+    public Hero(int HP, String behaviour, boolean hasHighIQ) {
+        super(HP, behaviour);
+        this.hasHighIQ = hasHighIQ;
+    }
+
+    @Override
+    public void attack() {
+        int attackPoints = 10;
+        if (hasHighIQ) {
+            attackPoints += 5;
+        }
+        System.out.println("Light attack with " + attackPoints + " points");
+    }
+}
+
+class Monster extends Human {
+    boolean hasBigBody;
+
+    public Monster(int HP, String behaviour, boolean hasBigBody) {
+        super(HP, behaviour);
+        this.hasBigBody = hasBigBody;
+    }
+
+    @Override
+    public void attack() {
+        int attackPoints = 10;
+        if (hasBigBody) {
+            HP -= 5;
+        }
+        System.out.println("Dark attack with " + attackPoints + " points");
+    }
+}
+
+class Team {
+    List<Human> members = new ArrayList<>();
+}
+
+class Game {
+    public void fight(Team team1, Team team2) {
+        while (true) {
+            boolean team1Alive = false;
+            boolean team2Alive = false;
+
+            for (Human attacker : team1.members) {
+                for (Human defender : team2.members) {
+                    if (!defender.isAlive()) {
+                        continue;  
+                    }
+
+                    attacker.attack();
+                    if (attacker instanceof Hero) {
+                        int attackPoints = 10;
+                        if (((Hero) attacker).hasHighIQ) {
+                            attackPoints += 5;
+                        }
+                        defender.HP -= attackPoints;
+                    } else {
+                        defender.HP -= 10;
+                    }
+
+                    System.out.println("Team 2 member HP: " + defender.HP);
+
+                    if (defender.isAlive()) {
+                        team2Alive = true;
+                    }
+                }
+
+                if (attacker.isAlive()) {
+                    team1Alive = true;
+                }
+            }
+
+            if (!team2Alive) {
+                System.out.println("Team 2 defeated. Team 1 wins!");
+                break;
+            }
+
+            for (Human attacker : team2.members) {
+                for (Human defender : team1.members) {
+                    if (!defender.isAlive()) {
+                        continue;  
+                    }
+
+                    attacker.attack();
+                    if (attacker instanceof Hero) {
+                        int attackPoints = 10;
+                        if (((Hero) attacker).hasHighIQ) {
+                            attackPoints += 5;
+                        }
+                        defender.HP -= attackPoints;
+                    } else {
+                        if (((Monster) attacker).hasBigBody) {
+                            defender.HP -= 10 + 5;
+                        } else {
+                            defender.HP -= 10;
+                        }
+                    }
+
+                    System.out.println("Team 1 member HP: " + defender.HP);
+
+                    if (defender.isAlive()) {
+                        team1Alive = true;
+                    }
+                }
+
+                if (attacker.isAlive()) {
+                    team2Alive = true;
+                }
+            }
+
+            if (!team1Alive) {
+                System.out.println("Team 1 defeated. Team 2 wins!");
+                break;
+            }
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Hero hero1 = new Hero(50, "Brave", true);
+        Hero hero2 = new Hero(50, "Brave", false);
+
+        Monster monster1 = new Monster(50, "Aggressive", true);
+        Monster monster2 = new Monster(50, "Aggressive", false);
+
+        Team team1 = new Team();
+        team1.members.add(hero1);
+        team1.members.add(hero2);
+
+        Team team2 = new Team();
+        team2.members.add(monster1);
+        team2.members.add(monster2);
+
+        Game game = new Game();
+        game.fight(team1, team2);
+    }
+}
