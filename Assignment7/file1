@@ -1,0 +1,40 @@
+// Online Javascript Editor for free
+// Write, Edit and Run your Javascript code using JS Online Compiler
+
+
+var json = {
+    "type": "div",
+    "children": [
+    {
+        "type": "h1",
+        "children": [
+            {
+                "type": "p"
+            }
+        ]
+    },
+    {
+        "type": "ul",
+        "children": [
+        {       
+            "type": "li"
+        },
+        {
+            "type": "li"
+        }
+        ]
+    }
+    ]
+};
+function print(item) {
+    if (item.type) {
+        console.log(item.type); 
+    }
+    if (item.children) {
+        item.children.forEach(function(child) {
+        print(child);
+    });
+    }
+}
+
+print(json); 
