@@ -1,1 +1,15 @@
+Q1). Display orderDate is 04:-
+SELECT * FROM [Orders] where OrderDate Like'%04'
 
+Q2). Display customers name and supplier name where orderDate is 04:-
+SELECT Orders.OrderID, Customers.CustomerName, Shippers.ShipperName, Orders.OrderDate
+FROM ((Orders
+INNER JOIN Customers ON Orders.CustomerID = Customers.CustomerID)
+INNER JOIN Shippers ON Orders.ShipperID = Shippers.ShipperID)
+where Orders.OrderDate Like'%04%'
+
+Q3). print product NAME for product with second highest quantity 
+SELECT Max(Quantity),Products.ProductName
+from [OrderDetails] INNER JOIN Products ON OrderDetails.ProductID = Products.ProductID 
+WHERE Quantity NOT IN (SELECT Max (Quantity) 
+                     FROM OrderDetails); 
