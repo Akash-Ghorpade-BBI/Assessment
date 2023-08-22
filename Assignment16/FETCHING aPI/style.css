@@ -1,0 +1,56 @@
+body {
+  font-family: 'Times New Roman', Times, serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #d4ceca;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  border: none;
+}
+
+#search-input {
+  padding: 0.5rem;
+  width: 20%;
+  border: none;
+}
+
+#search-button {
+  padding: 0.5rem 1rem;
+  background-color: rgb(4, 1, 1);
+  color: rgb(248, 248, 248);
+  border: none;
+  cursor: pointer;
+}
+
+#search-button:hover {
+  background-color: #555;
+}
+
+.country-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 2rem;
+  
+}
+
+.country-card {
+  flex: 0 0 calc(33.33% - 20px); /* Adjust card width based on your design */
+  margin: 1rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #d4ceca;
+  }
