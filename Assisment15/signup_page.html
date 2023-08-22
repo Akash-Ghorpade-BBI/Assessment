@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>RegEx Form</title>
+        <link rel="stylesheet" href="signup.css">
+    </head>
+    <body>
+        <h1>New User Signup</h1>
+        <form>
+            
+            <label >Username:</label>
+            <input type="text" name="username" placeholder="username" id="username">
+            <p>Username must be  and contain 5 - 12 characters and not numbers</p>
+          
+            <label>Email:</label>
+            <input type="text" name="email" placeholder="email" id="email">
+            <p>Email must be a valid address, e.g. me@mydomain.com</p>
+
+            <label>Password:</label>
+            <input type="password" name="password" placeholder="password" id="password">
+            <p>Password must alphanumeric (@, _ and - are also allowed) and be 8 - 20 characters</p>
+
+            <label>phone_no:</label>
+            <input type="int" name="phone_no" placeholder="phone_no" id="phone_no">
+            <p>Telephone must be a valid (10 digits)</p>
+
+            <input type="submit" value="submit" id="submit">
+            
+        </form>
+        <script type="text/javascript" src="script.js"></script>
+    </body>
+</html>
