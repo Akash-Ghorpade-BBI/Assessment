@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:json_assisment/home_screen.dart';
+import 'package:json_assisment/spash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -9,8 +10,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final emailController = TextEditingController();
-
+  final emailController2 = TextEditingController();
+  String? finalEmail;
+  bool? isChecked=false;
 
   // @override
   // void initState() {
@@ -24,6 +26,19 @@ class _LoginScreenState extends State<LoginScreen> {
   //
   //
   // }
+
+  Future getValidationData() async{
+    final SharedPreferences sharedprefrance= await SharedPreferences.getInstance() ;
+    var obtainEmail = sharedprefrance.getString("set_email");
+    //var allreadyEmail=sharedprefrance.getString("");
+    setState(() {
+      finalEmail=obtainEmail;
+      //UserEmail=allreadyEmail;
+    });
+    print(finalEmail);
+    //print(UserEmail);
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
 
                   TextField(
-                    controller: emailController,
+                    controller: emailController2,
                     decoration: InputDecoration(
                       fillColor: Colors.grey.shade100,
                       filled: true,
@@ -72,6 +87,31 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Row(
                     children: [
+                      SizedBox(
+
+                        child: Checkbox(
+                          value: isChecked,
+                          activeColor: Colors.green,
+
+                          onChanged: (newBool){
+                           // isChecked=true;
+                            setState(()async {
+                              isChecked= newBool;
+                              SharedPreferences sharedPreferences= await SharedPreferences.getInstance() ;
+                              sharedPreferences.setBool(splash_screenState.KEYLOGIN, isChecked!);
+                            });
+
+                          },
+
+                        ),
+
+                      ),
+                      Text('Remember Me'),
+
+                    ],
+                  ),
+                  Row(
+                    children: [
                       Container(
                         height: 50,
                         width: 150,
@@ -79,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Colors.blue, borderRadius: BorderRadius.circular(20)),
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pushNamed(
+                            Navigator.pushReplacementNamed(
                                 context, 'signup'
                             );
                           },
@@ -101,8 +141,30 @@ class _LoginScreenState extends State<LoginScreen> {
                             //     context, 'register'
                             // );
                             SharedPreferences sharedprefrance= await SharedPreferences.getInstance() ;
-                            sharedprefrance.setString('email', emailController.text);
-                            Navigator.pushNamed(context,'home' );
+                            sharedprefrance.setString('user_entered_email', emailController2.text);
+
+
+                            getValidationData().whenComplete(() => {
+                            if(finalEmail==emailController2.text){
+                                Navigator.pushReplacementNamed(context, 'home')
+                          }
+                            else{
+                                showDialog(
+                                context: context,
+                                builder: (BuildContext context)
+                                {
+                                  return const AlertDialog(
+                                    title: Text("Email Not Valid"),
+                                  );
+                                }//builder
+
+                            )
+                            }
+                            });
+
+
+                            print(isChecked);
+
                           },
                           child: const Text(
                             'Log In',

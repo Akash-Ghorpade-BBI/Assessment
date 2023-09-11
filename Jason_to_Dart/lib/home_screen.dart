@@ -44,7 +44,25 @@ class _MyApp extends State<MyAppState> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {},
+              child:  ElevatedButton(
+                onPressed: () async{
+                  Navigator.pushNamed(context,'details');
+                },
+                child: const Text(
+                  'Users Detils',
+                  style: TextStyle(color: Colors.white, fontSize: 25),
+                ),
+              ),
+            ),
+
+          ],
+        ),
         body: FutureBuilder<List<modal.GuidelinesModel>>(
+
             future: loadJsonAsset(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -54,13 +72,29 @@ class _MyApp extends State<MyAppState> {
               } else {
                 guidline_list = snapshot.data!;
                 return ListView.builder(
+
+
                     itemCount: guidline_list.length,
                     itemBuilder: (context, index) {
                       modal.GuidelinesModel guidLineModel =
                       guidline_list[index];
 
                       return Column(
+
                         children: [
+                          // SizedBox(
+                          //   height: 10,
+                          //   width: 1000,
+                          //   child: Column(
+                          //     children: [
+                          //       Text('Guidline App'),
+                          //       TextButton(
+                          //         onPressed: () {},
+                          //         child: const Text('Action 1'),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                           SizedBox(
                             height: 150,
                             width: 400,
@@ -192,7 +226,9 @@ class _MyApp extends State<MyAppState> {
                           )
                         ],
                       );
+
                     });
+
               }
             } //buildr
         ));
