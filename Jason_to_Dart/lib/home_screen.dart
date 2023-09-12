@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'guideline_model.dart' as modal;
+import 'package:http/http.dart' as http;
 
 class MyAppState extends StatefulWidget {
   const MyAppState({super.key});
@@ -12,26 +14,83 @@ class MyAppState extends StatefulWidget {
 
 class _MyApp extends State<MyAppState> {
   var jsonData;
-
+  bool switchState= false;
   List<modal.GuidelinesModel> guidline_list = [];
+  List<modal.GuidelinesModel> offline_list = [];
+  List<modal.GuidelinesModel> online_list = [];
+
+
+
+
+
+
+
+
+  // Future<List<modal.GuidelinesModel>> fetchNodes() async{
+  // await Future.delayed(const Duration(seconds: 2));
+  // var link = 'https://s3.eu-west-1.amazonaws.com/bbi.appsdata.2013/for_development/home_screen.json';
+  // var response =await http.get(link as Uri);
+  // if(response.statusCode==200){
+  // var data = json.decode(response.body);
+  // for(int i=0;i<data.length;i++){
+  // guidline_list.add(modal.GuidelinesModel.fromJson(data[i]));
+  // }
+  // return guidline_list;
+  // }
+  // }
+  //if
+  //final data = http.get(Uri.parse('https://s3.eu-west-1.amazonaws.com/bbi.appsdata.2013/for_development/home_screen.json'));
+var abc;
 
   Future<List<modal.GuidelinesModel>> loadJsonAsset() async {
-    await Future.delayed(const Duration(seconds: 2));
-    List<modal.GuidelinesModel> guidline_list = [];
-    try {
-      final String jsonString = await rootBundle.loadString('assets/data.json');
-      final data = jsonDecode(jsonString);
-      modal.GuidelinesModel obj = modal.GuidelinesModel.fromJson(data[0]);
-      var len_data = data.length;
-     // print(obj);
+  //await Future.delayed(const Duration(seconds: 2));
+  //List<modal.GuidelinesModel> guidline_list = [];
+  try {
 
-      for (int i = 0; i < len_data; i++) {
-        guidline_list.add(modal.GuidelinesModel.fromJson(data[i]));
+    if(switchState == true ){
+      if(online_list.isEmpty) {
+        //final String link = 'https://s3.eu-west-1.amazonaws.com/bbi.appsdata.2013/for_development/home_screen.json';
+        final data = await http.get(Uri.parse(
+            'https://s3.eu-west-1.amazonaws.com/bbi.appsdata.2013/for_development/home_screen.json'));
+
+        if (data.statusCode == 200) {
+
+          var node = json.decode(data.body);
+          for (int i = 0; i < node.length; i++) {
+            online_list.add(modal.GuidelinesModel.fromJson(node[i]));
+          }
+
+
+          //return guidline_list;
+        }
+        return guidline_list = online_list;
+      }else{return guidline_list = online_list;}
+    }//if
+    else{
+
+      if(online_list.isEmpty) {
+        final String jsonString = await rootBundle.loadString(
+            'assets/data.json');
+        final data = jsonDecode(jsonString);
+        modal.GuidelinesModel obj = modal.GuidelinesModel.fromJson(data[0]);
+        var len_data = data.length;
+        // print(obj);
+
+        for (int i = 0; i < len_data; i++) {
+          offline_list.add(modal.GuidelinesModel.fromJson(data[i]));
+        }
+        return guidline_list = offline_list;
+      }else{
+        return guidline_list = offline_list;
       }
-      return guidline_list;
-    } catch (e) {
-      throw Exception("Error:$e");
+      //return guidline_list;
     }
+    print(abc);
+     return guidline_list;
+
+  } catch (e) {
+  throw Exception("Error:$e");
+  }
   }
 
   // @override
@@ -48,16 +107,32 @@ class _MyApp extends State<MyAppState> {
           actions: <Widget>[
             TextButton(
               onPressed: () {},
+              child: CupertinoSwitch(
+                value: switchState,
+                onChanged: (bool value){
+                  setState(() {
+                    switchState = value;
+                  });
+                  print(value);
+                },
+              ),
+
+            ),
+
+            TextButton(
+              onPressed: () {},
               child:  ElevatedButton(
                 onPressed: () async{
                   Navigator.pushNamed(context,'details');
                 },
                 child: const Text(
                   'Users Detils',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
+                  //style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
+
             ),
+
 
           ],
         ),
