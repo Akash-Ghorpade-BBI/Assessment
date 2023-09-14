@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:provider/provider.dart';
+import 'details_model.dart';
 import 'guideline_model.dart' as modal;
 import 'package:http/http.dart' as http;
 
@@ -19,37 +21,14 @@ class _MyApp extends State<MyAppState> {
   List<modal.GuidelinesModel> offline_list = [];
   List<modal.GuidelinesModel> online_list = [];
 
-
-
-
-
-
-
-
-  // Future<List<modal.GuidelinesModel>> fetchNodes() async{
-  // await Future.delayed(const Duration(seconds: 2));
-  // var link = 'https://s3.eu-west-1.amazonaws.com/bbi.appsdata.2013/for_development/home_screen.json';
-  // var response =await http.get(link as Uri);
-  // if(response.statusCode==200){
-  // var data = json.decode(response.body);
-  // for(int i=0;i<data.length;i++){
-  // guidline_list.add(modal.GuidelinesModel.fromJson(data[i]));
-  // }
-  // return guidline_list;
-  // }
-  // }
-  //if
-  //final data = http.get(Uri.parse('https://s3.eu-west-1.amazonaws.com/bbi.appsdata.2013/for_development/home_screen.json'));
 var abc;
 
   Future<List<modal.GuidelinesModel>> loadJsonAsset() async {
-  //await Future.delayed(const Duration(seconds: 2));
-  //List<modal.GuidelinesModel> guidline_list = [];
   try {
 
     if(switchState == true ){
       if(online_list.isEmpty) {
-        //final String link = 'https://s3.eu-west-1.amazonaws.com/bbi.appsdata.2013/for_development/home_screen.json';
+
         final data = await http.get(Uri.parse(
             'https://s3.eu-west-1.amazonaws.com/bbi.appsdata.2013/for_development/home_screen.json'));
 
@@ -102,9 +81,17 @@ var abc;
 
   @override
   Widget build(BuildContext context) {
+    final nameprovider= Provider.of<UserName>(context);
     return Scaffold(
         appBar: AppBar(
+
           actions: <Widget>[
+
+            Padding(
+
+              padding: const EdgeInsets.only(top: ),
+              child: Text(nameprovider.global_name.toString(),style: TextStyle(color: Colors.white, fontSize: 25),),
+            ),
             TextButton(
               onPressed: () {},
               child: CupertinoSwitch(

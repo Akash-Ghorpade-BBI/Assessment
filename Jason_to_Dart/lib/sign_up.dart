@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:json_assisment/home_screen.dart';
+import 'package:json_assisment/main.dart';
+import 'package:json_assisment/details_model.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -8,9 +11,11 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
 
+class _SignUpScreenState extends State<SignUpScreen> {
+  //Future<SharedPreferences> sharedprefrance=  SharedPreferences.getInstance() ;
   final emailController = TextEditingController();
+  final nameController=TextEditingController();
   // @override
   // void initState() {
   //   // TODO: implement initState
@@ -26,6 +31,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final nameprovider= Provider.of<UserName>(context);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -36,16 +43,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Column(
 
                 children: [
-                  Text(
+                  const Text(
                     "Signup Page",
                     style: TextStyle(
                         fontSize: 34, color: Colors.red, fontWeight: FontWeight.w700),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   TextField(
+
+                    controller: nameController,
                     decoration: InputDecoration(
+
                         fillColor: Colors.grey.shade100,
                         filled: true,
                         hintText: 'Enter Your Name',
@@ -79,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     obscureText: true,
                   ),
-                  SizedBox(
+                  const  SizedBox(
                     height: 40,
                   ),
 
@@ -99,9 +109,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
                             RegExp regExpEmail = RegExp(patternEmail);
 
-
-                            SharedPreferences sharedprefrance= await SharedPreferences.getInstance() ;
-                            sharedprefrance.setString('set_email', emailController.text);
+                            SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+                            sharedPreferences!.setString('set_email', emailController.text);
+                            nameprovider.changeName(nameController.text);
+                            //sharedPreferences!.setString('set_name', nameController.text);
                             if (regExpEmail.hasMatch(emailController.text) ==false){
                               showDialog(
                                   context: context,

@@ -7,12 +7,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:json_assisment/user_verification.dart' as modal;
 
 import 'package:http/http.dart' as http;
+
+import 'main.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
+
+
 
 class _LoginScreenState extends State<LoginScreen> {
   final emailController2 = TextEditingController();
@@ -27,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // Map map = Map<int, String>();
   Future loadUserJson() async {
 
-    //final String link = 'https://s3.eu-west-1.amazonaws.com/bbi.appsdata.2013/for_development/home_screen.json';
+
     final userdata1 =await http.get(Uri.parse('https://s3.eu-west-1.amazonaws.com/bbi.appsdata.2013/for_development/user_details.json'));
 
 
@@ -63,8 +67,8 @@ class _LoginScreenState extends State<LoginScreen> {
   // }
 
   Future getValidationData() async{
-    final SharedPreferences sharedprefrance= await SharedPreferences.getInstance() ;
-    var obtainEmail = sharedprefrance.getString("set_email");
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    var obtainEmail = sharedPreferences!.getString("set_email");
     //var allreadyEmail=sharedprefrance.getString("");
     setState(() {
 
