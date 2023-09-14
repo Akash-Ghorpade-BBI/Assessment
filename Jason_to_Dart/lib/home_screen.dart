@@ -87,11 +87,13 @@ var abc;
 
           actions: <Widget>[
 
-            Padding(
 
-              padding: const EdgeInsets.only(top: ),
-              child: Text(nameprovider.global_name.toString(),style: TextStyle(color: Colors.white, fontSize: 25),),
+            Text(
+              nameprovider.global_name.toString(),
+              style:const TextStyle(color: Colors.white, fontSize: 25
+              ),
             ),
+
             TextButton(
               onPressed: () {},
               child: CupertinoSwitch(
