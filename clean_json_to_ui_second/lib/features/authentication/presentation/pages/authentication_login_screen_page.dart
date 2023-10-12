@@ -167,6 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             .callAuthenticationSignIn();
 
                         print(decision);
+                        print(decision);
                         if (decision == false) {
                           emailController.clear();
                           nameController.clear();
@@ -192,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       },
                       child: const Text(
-                        'Log In',
+                        'Log On ',
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w800,
